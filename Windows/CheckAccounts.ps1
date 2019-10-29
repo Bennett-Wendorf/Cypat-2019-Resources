@@ -3,7 +3,37 @@
 )
 
 $file = Import-Csv -Path $usersFile
-$localUsers = Get-localUser
+
+$localUsers = New-Object System.Collections.Generic.List[String]
+foreach($user in Get-localUser){
+    $localUsers.Add($user.Name)
+}
+
+$localAdmins = Get-LocalGroupMember -Group "Administrators"
+
+Function CheckLocalAdminsVsCsv{
+    ForEach($currentLocalAdmin in $localAdmins) {
+        :ToNextLocalUser_LABEL
+        ForEach($admin in $file.Admins){
+            $currentLocalAdminName = $currentLocalAdmin.Name.substring($env:COMPUTERNAME.Length+1)
+            If($currentLocalAdminName -eq $admin){
+                $localAdminMatch = 1
+                break :ToNextLocalUser_LABEL
+            }
+            Else{
+                $localAdminMatch = 0
+            }
+        }
+
+        
+        If($localAdminMatch){
+            Write-Host "$($currentLocalAdminName) was found in the csv." 
+        }
+        Else{
+            Write-Host "$($currentLocalAdminName) was NOT found in the csv."
+        }
+    }
+}
 
 Function CheckLocalUsersVsCsv{
     ForEach($currentLocalUser in $localUsers) {
@@ -30,3 +60,4 @@ Function CheckLocalUsersVsCsv{
 }
 
 CheckLocalUsersVsCsv
+CheckLocalAdminsVsCsv
