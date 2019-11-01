@@ -1,4 +1,5 @@
 ﻿param(
+    #File containing all users and administrators that should exist on the target computer
     [string]$usersFile
 )
 
@@ -31,7 +32,7 @@ Function CheckLocalUsersVsCsv{
     ForEach($currentLocalUser in $localUsers) {
         :ToNextLocalUser_LABEL
         ForEach($user in $file.Users){
-            If($currentLocalUser.Name -eq $user){
+            If($currentLocalUser -eq $user){
                 $localUserMatch = 1
                 break :ToNextLocalUser_LABEL
             }
@@ -54,6 +55,7 @@ Function CheckLocalUsersVsCsv{
 #Import CSV database
 $file = Import-Csv -Path $usersFile
 
+#Create new list to store local administrators
 $localAdmins = New-Object System.Collections.Generic.List[String]
 
 #Gets users of the Administrators group
@@ -64,14 +66,25 @@ foreach($admin in $localAdminsTemp){
     $localAdmins.Add($admin.Name.substring($env:COMPUTERNAME.Length+1))
 }
 
+#Create new list to store local user accounts
 $localUsers = New-Object System.Collections.Generic.List[String]
 
 #Adds names of all non-administrator users to $localUsers
 foreach($user in Get-localUser){
-    #Need to not add users that are admins
-    $localUsers.Add($user.Name)        
+    $isAdmin = $false;
+    foreach($admin in $localAdmins){
+        if($admin -eq $user){
+            $isAdmin = $true
+        }
+    }
+    if(-Not $isAdmin)
+    {
+        $localUsers.Add($user.Name)   
+    }     
 }
 $localUsers
+""
+$localAdmins
 ""
 
 #Remove built in accounts from check list and assigns the output to $null to suppress boolean output
