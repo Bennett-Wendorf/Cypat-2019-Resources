@@ -12,20 +12,53 @@ if($enableAdvancedDebugMode){
 }
 ""
 
-#List to store users ho have administrator permissions that they shouldn't.
+#List to store users who have administrator permissions that they shouldn't.
 $elevatedPermissionsUsers = New-Object System.Collections.Generic.List[String]
+
+#List to store unauthorized users.
+$unauthorizedUsers = New-Object System.Collections.Generic.List[String]
 
 #Asks the user if they would like to demote elevated accounts and changes group membership accordingly
 Function CheckAndRemoveElevatedUsers{
     If(!($elevatedPermissionsUsers.count -eq 0)){
         "elevatedPermissionsUsers are:"
         $elevatedPermissionsUsers
+        ""
         "Would you like to downgrade the permissions of these users? (y/n)"
         While($true) {
             $answer = Read-Host -Prompt 'Please input y or n'
             If($answer -eq "y"){
                 ForEach($user in $elevatedPermissionsUsers){
+                    if($enableAdvancedDebugMode){
+                        Write-Host "Demoted $($user)."
+                    }
                     Remove-LocalGroupMember Administrators $user
+                }
+                break
+            }
+            ElseIf($answer -eq "n") {
+                "Ok"
+                break
+            }
+        } 
+    }
+}
+
+#Asks the user if they would like to remove unauthorized accounts
+Function CheckAndRemoveUnauthorizedUsers{
+    If(!($unauthorizedUsers.count -eq 0)){
+        "Unauthorized users are:"
+        $unauthorizedUsers
+        ""
+        "Would you like to delete of these users? (y/n)"
+        While($true) {
+            $answer = Read-Host -Prompt 'Please input y or n'
+            If($answer -eq "y"){
+                ForEach($user in $unauthorizedUsers){
+                    if($enableAdvancedDebugMode){
+                        Write-Host "Removed $($user)."
+                    }
+                    Remove-LocalUser -Name $user
                 }
                 break
             }
@@ -80,7 +113,6 @@ Function CheckLocalUsersVsCsv{
                 $localUserMatch = 0
             }
         }
-
         
         If($localUserMatch){
             if($enableAdvancedDebugMode){
@@ -88,9 +120,11 @@ Function CheckLocalUsersVsCsv{
             }
         }
         Else{
-            #if($enableAdvancedDebugMode){
+            if($enableAdvancedDebugMode){
                 Write-Host "$($currentLocalUser) was NOT found in the csv."
-            #}
+                Write-Host "$($currentLocalUser) added to unauthorizedUsers."
+            }
+            $unauthorizedUsers.Add($currentLocalUser)
         }
     }
 
@@ -126,6 +160,8 @@ foreach($user in Get-localUser){
         $localUsers.Add($user.Name)   
     }     
 }
+
+#Prints group memberships if advanced debug mode is enabled
 if($enableAdvancedDebugMode){
     "localAdmins are:"
     $localAdmins
@@ -153,3 +189,8 @@ if($enableAdvancedDebugMode){
     ""
 }
 CheckAndRemoveElevatedUsers
+if($enableAdvancedDebugMode){
+    ""
+}
+CheckAndRemoveUnauthorizedUsers
+""
