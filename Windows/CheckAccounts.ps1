@@ -3,7 +3,29 @@
     [string]$usersFile
 )
 
-#Checks $localAdmin against the Admins column of a csv file
+$elevatedPermissionsUsers = New-Object System.Collections.Generic.List[String]
+
+#Asks the user if they would like to demote elevated accounts and changes group membership accordingly
+Function CheckAndRemoveElevatedUsers{
+    If(!($elevatedPermissionsUsers.count -eq 0)){
+        "Would you like to downgrade the permissions of these users? (y/n)"
+        While($true) {
+            $answer = Read-Host -Prompt 'Please input y or n: '
+            If($answer -eq "y"){
+                ForEach($user in $elevatedPermissionsUsers){
+                    Remove-LocalGroupMember Administrators $user
+                }
+                break
+            }
+            ElseIf($answer -eq "n") {
+                "Ok"
+                break
+            }
+        } 
+    }
+}
+
+#Checks $localAdmin against the Admins column of the csv file
 Function CheckLocalAdminsVsCsv{
     ForEach($currentLocalAdmin in $localAdmins) {
         :ToNextLocalUser_LABEL
@@ -23,11 +45,13 @@ Function CheckLocalAdminsVsCsv{
         }
         Else{
             Write-Host "$($currentLocalAdmin) was NOT found in the csv."
+            $elevatedPermissionsUsers.Add($currentLocalAdmin)
+            Write-Host "$($currentLocalAdmin) added to elevatedPermissionsUsers"
         }
     }
 }
 
-#Checks $localUsers against the Users column of a csv file
+#Checks $localUsers against the Users column of the csv file
 Function CheckLocalUsersVsCsv{
     ForEach($currentLocalUser in $localUsers) {
         :ToNextLocalUser_LABEL
@@ -82,8 +106,10 @@ foreach($user in Get-localUser){
         $localUsers.Add($user.Name)   
     }     
 }
+"localUsers are:"
 $localUsers
 ""
+"localAdmins are:"
 $localAdmins
 ""
 
@@ -92,5 +118,11 @@ $null = $localUsers.Remove("DefaultAccount")
 $null = $localUsers.Remove("Guest")
 $null = $localAdmins.Remove("Administrator")
 
+"Local Admins:"
 CheckLocalAdminsVsCsv
+"Local Users:"
 CheckLocalUsersVsCsv
+""
+"elevatedPermissionsUsers are:"
+$elevatedPermissionsUsers
+CheckAndRemoveElevatedUsers
