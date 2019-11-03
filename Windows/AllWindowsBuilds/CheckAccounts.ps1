@@ -1,6 +1,6 @@
 ﻿param(
     #File containing all users and administrators that should exist on the target computer
-    [string]$usersFile
+    [string]$pathToUsersFile
 )
 
 #List to store users ho have administrator permissions that they shouldn't.
@@ -11,7 +11,7 @@ Function CheckAndRemoveElevatedUsers{
     If(!($elevatedPermissionsUsers.count -eq 0)){
         "Would you like to downgrade the permissions of these users? (y/n)"
         While($true) {
-            $answer = Read-Host -Prompt 'Please input y or n: '
+            $answer = Read-Host -Prompt 'Please input y or n'
             If($answer -eq "y"){
                 ForEach($user in $elevatedPermissionsUsers){
                     Remove-LocalGroupMember Administrators $user
@@ -78,7 +78,7 @@ Function CheckLocalUsersVsCsv{
 }
 
 #Import CSV database
-$file = Import-Csv -Path $usersFile
+$file = Import-Csv -Path $pathToUsersFile
 
 #Create new list to store local administrators
 $localAdmins = New-Object System.Collections.Generic.List[String]
