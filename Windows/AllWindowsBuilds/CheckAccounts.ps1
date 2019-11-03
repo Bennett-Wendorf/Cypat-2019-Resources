@@ -1,7 +1,16 @@
 ﻿param(
     #File containing all users and administrators that should exist on the target computer
-    [string]$pathToUsersFile
+    [string]$pathToUsersFile,
+
+    #Determines if this script will output extra information.
+    [Parameter(Mandatory=$true)]
+    [boolean]$enableAdvancedDebugMode = $false
 )
+
+if($enableAdvancedDebugMode){
+    Write-Host "CheckAccounts.ps1 has started with Advanced Debug Mode enabled."
+}
+""
 
 #List to store users ho have administrator permissions that they shouldn't.
 $elevatedPermissionsUsers = New-Object System.Collections.Generic.List[String]
@@ -9,6 +18,8 @@ $elevatedPermissionsUsers = New-Object System.Collections.Generic.List[String]
 #Asks the user if they would like to demote elevated accounts and changes group membership accordingly
 Function CheckAndRemoveElevatedUsers{
     If(!($elevatedPermissionsUsers.count -eq 0)){
+        "elevatedPermissionsUsers are:"
+        $elevatedPermissionsUsers
         "Would you like to downgrade the permissions of these users? (y/n)"
         While($true) {
             $answer = Read-Host -Prompt 'Please input y or n'
@@ -42,12 +53,16 @@ Function CheckLocalAdminsVsCsv{
 
         
         If($localAdminMatch){
-            Write-Host "$($currentLocalAdmin) was found in the csv." 
+            if($enableAdvancedDebugMode){
+                Write-Host "$($currentLocalAdmin) was found in the csv." 
+            }
         }
         Else{
-            Write-Host "$($currentLocalAdmin) was NOT found in the csv."
+            if($enableAdvancedDebugMode){
+                Write-Host "$($currentLocalAdmin) was NOT found in the csv."
+                Write-Host "$($currentLocalAdmin) added to elevatedPermissionsUsers"
+            }
             $elevatedPermissionsUsers.Add($currentLocalAdmin)
-            Write-Host "$($currentLocalAdmin) added to elevatedPermissionsUsers"
         }
     }
 }
@@ -68,10 +83,14 @@ Function CheckLocalUsersVsCsv{
 
         
         If($localUserMatch){
-            Write-Host "$($currentLocalUser) was found in the csv." 
+            if($enableAdvancedDebugMode){
+                Write-Host "$($currentLocalUser) was found in the csv." 
+            }
         }
         Else{
-            Write-Host "$($currentLocalUser) was NOT found in the csv."
+            #if($enableAdvancedDebugMode){
+                Write-Host "$($currentLocalUser) was NOT found in the csv."
+            #}
         }
     }
 
@@ -107,24 +126,30 @@ foreach($user in Get-localUser){
         $localUsers.Add($user.Name)   
     }     
 }
-"localAdmins are:"
-$localAdmins
-""
-"localUsers are:"
-$localUsers
-""
+if($enableAdvancedDebugMode){
+    "localAdmins are:"
+    $localAdmins
+    ""
+    "localUsers are:"
+    $localUsers
+    ""
+}
 
 #Remove built in accounts from check list and assigns the output to $null to suppress boolean output
 $null = $localUsers.Remove("DefaultAccount")
 $null = $localUsers.Remove("Guest")
 $null = $localAdmins.Remove("Administrator")
 
-"Local Admins:"
+if($enableAdvancedDebugMode){
+    "Local Admins:"
+}
 CheckLocalAdminsVsCsv
-""
-"Local Users:"
+if($enableAdvancedDebugMode){
+    ""
+    "Local Users:"
+}
 CheckLocalUsersVsCsv
-""
-"elevatedPermissionsUsers are:"
-$elevatedPermissionsUsers
+if($enableAdvancedDebugMode){
+    ""
+}
 CheckAndRemoveElevatedUsers
