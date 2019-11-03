@@ -106,11 +106,11 @@ foreach($user in Get-localUser){
         $localUsers.Add($user.Name)   
     }     
 }
-"localUsers are:"
-$localUsers
-""
 "localAdmins are:"
 $localAdmins
+""
+"localUsers are:"
+$localUsers
 ""
 
 #Remove built in accounts from check list and assigns the output to $null to suppress boolean output
@@ -120,6 +120,7 @@ $null = $localAdmins.Remove("Administrator")
 
 "Local Admins:"
 CheckLocalAdminsVsCsv
+""
 "Local Users:"
 CheckLocalUsersVsCsv
 ""
