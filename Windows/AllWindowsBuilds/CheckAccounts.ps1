@@ -3,6 +3,7 @@
     [string]$usersFile
 )
 
+#List to store users ho have administrator permissions that they shouldn't.
 $elevatedPermissionsUsers = New-Object System.Collections.Generic.List[String]
 
 #Asks the user if they would like to demote elevated accounts and changes group membership accordingly
