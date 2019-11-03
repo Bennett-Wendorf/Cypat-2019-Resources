@@ -1,13 +1,12 @@
 param(
-    [Parameter(Mandatory=$true, Position=0)]
+    [Parameter(Mandatory=$true)]
     [string]$userAccountsFile,
 
     #Default password to change bad passwords to
-    [Parameter(Mandatory=$true, Position=1)]
+    [Parameter(Mandatory=$true)]
     [Security.SecureString]$defaultPassword,
 
     #Determines if scripts will output extra debug information.
-    [Parameter(Position=2)]
     [switch]$enableAdvancedDebugMode
 )
 
