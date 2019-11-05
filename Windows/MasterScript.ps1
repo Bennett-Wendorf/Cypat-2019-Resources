@@ -1,4 +1,5 @@
 param(
+    #File containing all users and administrators that should exist on the target computer
     [Parameter(Mandatory=$true)]
     [string]$userAccountsFile,
 
@@ -10,6 +11,7 @@ param(
     [switch]$enableAdvancedDebugMode
 )
 
+#Notifies the user if Advanced Debug Mode is enabled.
 if($enableAdvancedDebugMode){
     ""
     Write-Host "Advanced Debug Mode is now enabled."
