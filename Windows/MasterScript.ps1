@@ -18,6 +18,15 @@ if($enableAdvancedDebugMode){
 }
 ""
 
+while(!(Test-Path -Path $userAccountsFile)){
+    if($enableAdvancedDebugMode){
+        Write-Host "Output of Test-Path command was: "(Test-Path -Path $userAccountsFile)
+    }
+    Write-Host "The userAccountsFile that you entered was invalid. Please enter a new file path."
+    $userAccountsFile = Read-Host -Prompt "New path"
+    Write-Host ""
+}
+
 #Call CheckAccounts.ps1 with parameter input
 $ScriptPath = $PSScriptRoot + "\AllWindowsBuilds"
 & "$($ScriptPath)\CheckAccounts.ps1" $userAccountsFile $enableAdvancedDebugMode
