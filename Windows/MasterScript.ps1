@@ -1,7 +1,7 @@
 param(
     #File containing all users and administrators that should exist on the target computer
     [Parameter(Mandatory=$true)]
-    [string]$userAccountsFile,
+    [string]$userAccountsFilePath,
 
     #Default password to change bad passwords to
     [Parameter(Mandatory=$true)]
@@ -29,8 +29,8 @@ while(!(Test-Path -Path $userAccountsFile)){
 
 #Call CheckAccounts.ps1 with parameter input
 $ScriptPath = $PSScriptRoot + "\AllWindowsBuilds"
-& "$($ScriptPath)\CheckAccounts.ps1" $userAccountsFile $enableAdvancedDebugMode
+& "$($ScriptPath)\CheckAccounts.ps1" $userAccountsFilePath $enableAdvancedDebugMode
 
 #Call CheckPassword.ps1 with parameter input
 $ScriptPath = $PSScriptRoot + "\AllWindowsBuilds"
-& "$($ScriptPath)\CheckPassword.ps1" $userAccountsFile $defaultPassword $enableAdvancedDebugMode
+& "$($ScriptPath)\CheckPassword.ps1" $userAccountsFilePath $defaultPassword $enableAdvancedDebugMode
