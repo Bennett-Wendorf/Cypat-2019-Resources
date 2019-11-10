@@ -172,9 +172,19 @@ if($enableAdvancedDebugMode){
 }
 
 #Remove built in accounts from check list and assigns the output to $null to suppress boolean output
-$null = $localUsers.Remove("DefaultAccount")
-$null = $localUsers.Remove("Guest")
-$null = $localAdmins.Remove("Administrator")
+if($enableAdvancedDebugMode){
+    Write-Host "Ignoring DefaultAccount: " + $localUsers.Remove("DefaultAccount")
+    Write-Host "Ignoring Guest: " + $localUsers.Remove("Guest")
+    Write-Host "Ignoring Administrator: " + $localAdmins.Remove("Administrator")
+    Write-Host "Ignoring WDAGUtilityAccount: " + $localUsers.Remove("WDAGUtilityAccount")
+}
+else{
+    $null = $localUsers.Remove("DefaultAccount")
+    $null = $localUsers.Remove("Guest")
+    $null = $localAdmins.Remove("Administrator")
+    $null = $localUsers.Remove("WDAGUtilityAccount")
+}
+
 
 if($enableAdvancedDebugMode){
     "Local Admins:"
