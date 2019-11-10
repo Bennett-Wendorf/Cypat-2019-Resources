@@ -1,5 +1,6 @@
 param(
     #File containing all users and administrators that should exist on the target computer
+    [Parameter(Mandatory=$true)]
     [string]$pathToUsersFile,
 
     #Determines if this script will output extra information.
@@ -12,20 +13,21 @@ if($enableAdvancedDebugMode){
 }
 ""
 
-$fileTypes = "txt", "mp3", "mp4"
-$directories = "Music", "Desktop", "Documents", "Downloads", "Pictures", "Videos"
+[String[]]$fileTypes = @("*.txt", "*.mp3", "*.mp4")
+[String[]]$directories = @("Music", "Desktop", "Documents", "Downloads", "Pictures", "Videos")
+[String[]]$excludes = @("My Music", "My Videos", "My Pictures")
 
 $file = Import-Csv -Path $pathToUsersFile
 
 Function SearchUser{
     param($user)
-    if($enableAdvancedDebugMode){
-        Write-Host "Searching $user's directories."
-    }
+    if($user.Length -gt 0){
+        if($enableAdvancedDebugMode){
+            Write-Host "Searching $user's directories."
+        }
 
-    ForEach($directory in $directories){
-        ForEach($fileType in $fileTypes){
-            Get-ChildItem -Path "C:\Users\$user\$directory" -Recurse -Force -Include "*.$fileType"
+        ForEach($directory in $directories){
+            Get-ChildItem -Path "C:\Users\$user\$directory" -Recurse -Force -Include $fileTypes -Exclude $excludes
         }
     }
 }
