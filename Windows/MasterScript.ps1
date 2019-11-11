@@ -24,7 +24,7 @@ while(!(Test-Path -Path $userAccountsFilePath)){
         Write-Host "Output of Test-Path command was: " + (Test-Path -Path $userAccountsFilePath)
     }
     Write-Host "The userAccountsFile that you entered was invalid. Please enter a new file path."
-    $userAccountsFile = Read-Host -Prompt "New path"
+    $userAccountsFilePath = Read-Host -Prompt "New path"
     Write-Host ""
 }
 
