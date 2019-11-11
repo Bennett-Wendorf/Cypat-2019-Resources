@@ -35,3 +35,7 @@ $ScriptPath = $PSScriptRoot + "\AllWindowsBuilds"
 #Call CheckPassword.ps1 with parameter input
 $ScriptPath = $PSScriptRoot + "\AllWindowsBuilds"
 & "$($ScriptPath)\CheckPassword.ps1" $userAccountsFilePath $defaultPassword $enableAdvancedDebugMode
+
+#Call WindowsUpdates.ps1 with parameter input
+$ScriptPath = $PSScriptRoot + "\AllWindowsBuilds"
+& "$($ScriptPath)\WindowsUpdates.ps1" $enableAdvancedDebugMode
