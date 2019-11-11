@@ -1,6 +1,8 @@
 #UserAccounts csv
 UserAccounts.csv
 
+VSCodeWorkspace.code-workspace
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
