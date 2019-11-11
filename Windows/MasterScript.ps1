@@ -17,7 +17,6 @@ if($enableAdvancedDebugMode){
     Write-Host "Advanced Debug Mode is now enabled."
 }
 ""
-$userAccountsFilePath
 
 while(!(Test-Path -Path $userAccountsFilePath)){
     if($enableAdvancedDebugMode){
