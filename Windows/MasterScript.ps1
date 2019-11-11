@@ -38,3 +38,7 @@ $ScriptPath = $PSScriptRoot + "\AllWindowsBuilds"
 #Call WindowsUpdates.ps1 with parameter input
 $ScriptPath = $PSScriptRoot + "\AllWindowsBuilds"
 & "$($ScriptPath)\WindowsUpdates.ps1" $enableAdvancedDebugMode
+
+#Call WindowsDefender.ps1 with parameter input
+$ScriptPath = $PSScriptRoot + "\AllWindowsBuilds"
+& "$($ScriptPath)\WindowsDefender.ps1" $enableAdvancedDebugMode
