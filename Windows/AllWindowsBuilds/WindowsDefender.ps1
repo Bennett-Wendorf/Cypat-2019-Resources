@@ -29,4 +29,9 @@ Set-MpPreference -DisableRealtimeMonitoring $false
 if($enableAdvancedDebugMode){
     Write-Host "Starting scan."
 }
-Start-MpScan
+if($enableAdvancedDebugMode){
+    Start-MpScan
+}
+else {
+    $null = Start-MpScan
+}
