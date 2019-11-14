@@ -50,7 +50,7 @@ read -ra currentAdmins <<< "$ADMINOUTPUT" # str is read into an array as tokens 
 
 
 #get all users (administrators and standard users combined)
-while IFS=: read -r user _ uid _ _ homedir _
+while IFS=: read -r user _ uid _ 
 do
     (( uid > 999 && uid != 65534 )) && currentUsers+=( "$user" )
 done < "/etc/passwd"
