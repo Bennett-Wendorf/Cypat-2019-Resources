@@ -5,6 +5,9 @@ SCRIPTDIR=`dirname "${THIS}"`
 
 declare -a admins
 declare -a users
+declare -a currentAdmins
+declare -a currentUsers
+
 
 #set debug mode to false (will change to true --debug argument is specified)
 debug_mode=false
@@ -35,5 +38,39 @@ done < "${SCRIPTDIR}/UserAccounts.csv"
 
 IFS=$OLDIFS
 
-echo ${admins[@]}
-echo ${users[@]}
+
+
+#get list of current administrators
+
+read ADMINOUTPUT <<< $(grep '^sudo:.*$' /etc/group | cut -d: -f4)
+
+IFS=',' 
+read -ra currentAdmins <<< "$ADMINOUTPUT" # str is read into an array as tokens separated by IFS
+
+
+
+#get all users (administrators and standard users combined)
+while IFS=: read -r user _ uid _ _ homedir _
+do
+    (( uid > 999 && uid != 65534 )) && currentUsers+=( "$user" )
+done < "/etc/passwd"
+
+
+#remove administrators from all users list in order to determine standard users
+
+for i in "${!currentAdmins[@]}"; do
+    for j in "${!currentUsers[@]}"; do
+          if [[ ${currentAdmins[$i]} = "${currentUsers[$j]}" ]]; then
+
+            unset currentUsers[j]
+                   
+          fi
+    done
+done
+
+
+echo "Current Admins:"
+echo ${currentAdmins[@]}
+
+echo "Standard Users:"
+echo ${currentUsers[@]}
