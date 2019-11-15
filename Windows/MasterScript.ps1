@@ -27,6 +27,8 @@ while(!(Test-Path -Path $userAccountsFilePath)){
     Write-Host ""
 }
 
+$OSName = (Get-WmiObject win32_operatingsystem).name
+
 #Call CheckAccounts.ps1 with parameter input
 $ScriptPath = $PSScriptRoot + "\AllWindowsBuilds"
 & "$($ScriptPath)\CheckAccounts.ps1" $userAccountsFilePath $enableAdvancedDebugMode
@@ -35,10 +37,20 @@ $ScriptPath = $PSScriptRoot + "\AllWindowsBuilds"
 $ScriptPath = $PSScriptRoot + "\AllWindowsBuilds"
 & "$($ScriptPath)\CheckPassword.ps1" $userAccountsFilePath $defaultPassword $enableAdvancedDebugMode
 
-#Call WindowsUpdates.ps1 with parameter input
+#Call SearchDirectories.ps1 with parameter input
 $ScriptPath = $PSScriptRoot + "\AllWindowsBuilds"
-& "$($ScriptPath)\WindowsUpdates.ps1" $enableAdvancedDebugMode
+& "$($ScriptPath)\SearchDirectories.ps1" $userAccountsFilePath $enableAdvancedDebugMode
 
 #Call WindowsDefender.ps1 with parameter input
 $ScriptPath = $PSScriptRoot + "\AllWindowsBuilds"
 & "$($ScriptPath)\WindowsDefender.ps1" $enableAdvancedDebugMode
+
+if($OSName -contains "server"){
+    #Call CheckIIS(Server).ps1 with parameter input
+    $ScriptPath = $PSScriptRoot + "\AllWindowsBuilds"
+    & "$($ScriptPath)\CheckIIS(Server).ps1" $enableAdvancedDebugMode
+}
+
+#Call WindowsUpdates.ps1 with parameter input
+$ScriptPath = $PSScriptRoot + "\AllWindowsBuilds"
+& "$($ScriptPath)\WindowsUpdates.ps1" $enableAdvancedDebugMode
