@@ -6,7 +6,7 @@ param(
 if($enableAdvancedDebugMode){
     Write-Host "WindowsUpdates.ps1 has started with Advanced Debug Mode enabled."
 }
-""
+Write-Host ""
 
 if($enableAdvancedDebugMode){
     Write-Host "Installing PSWindowsUpdate powershell module."
@@ -36,7 +36,7 @@ Write-Host "Would you like to reboot the computer? (y/n)"
                 Write-Host "Not rebooting computer due to user input."
             }
             else{
-                "Ok"
+                Write-Host "Ok"
             }
             break
         }

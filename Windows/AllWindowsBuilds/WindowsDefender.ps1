@@ -6,7 +6,7 @@ param(
 if($enableAdvancedDebugMode){
     Write-Host "WindowsDefender.ps1 has started with Advanced Debug Mode enabled."
 }
-""
+Write-Host ""
 
 if($enableAdvancedDebugMode){
     Write-Host "Current Windows defender status: "

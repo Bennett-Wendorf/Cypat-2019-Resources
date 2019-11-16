@@ -166,12 +166,12 @@ foreach($user in Get-localUser){
 
 #Prints group memberships if advanced debug mode is enabled
 if($enableAdvancedDebugMode){
-    "localAdmins are:"
+    Write-Host "localAdmins are:"
     $localAdmins
-    ""
-    "localUsers are:"
+    Write-Host ""
+    Write-Host "localUsers are:"
     $localUsers
-    ""
+    Write-Host ""
 }
 
 #Remove built in accounts from check list and assigns the output to $null to suppress boolean output
@@ -190,20 +190,20 @@ else{
 
 
 if($enableAdvancedDebugMode){
-    "Local Admins:"
+    Write-Host "Local Admins:"
 }
 CheckLocalAdminsVsCsv
 if($enableAdvancedDebugMode){
-    ""
-    "Local Users:"
+    Write-Host ""
+    Write-Host "Local Users:"
 }
 CheckLocalUsersVsCsv
 if($enableAdvancedDebugMode){
-    ""
+    Write-Host ""
 }
 CheckAndRemoveElevatedUsers
 if($enableAdvancedDebugMode){
-    ""
+    Write-Host ""
 }
 CheckAndRemoveUnauthorizedUsers
-""
+Write-Host ""

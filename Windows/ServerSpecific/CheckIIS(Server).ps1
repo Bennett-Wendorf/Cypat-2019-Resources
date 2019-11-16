@@ -9,7 +9,7 @@ $IISFeatureName = "Web-Server"
 if($enableAdvancedDebugMode){
     Write-Host "WindowsDefender.ps1 has started with Advanced Debug Mode enabled."
 }
-""
+Write-Host ""
 
 if($enableAdvancedDebugMode){
     Write-Host "Checking if IIS is installed"
@@ -36,7 +36,7 @@ if($IISEnabled){
                 Write-Host "Not removing IIS due to user input."
             }
             else{
-                "Ok"
+                Write-Host "Ok"
             }
             break
         }

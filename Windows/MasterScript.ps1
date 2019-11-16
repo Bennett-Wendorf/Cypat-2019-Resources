@@ -13,10 +13,10 @@ param(
 
 #Notifies the user if Advanced Debug Mode is enabled.
 if($enableAdvancedDebugMode){
-    ""
+    Write-Host ""
     Write-Host "Advanced Debug Mode is now enabled."
 }
-""
+Write-Host ""
 
 while(!(Test-Path -Path $userAccountsFilePath)){
     if($enableAdvancedDebugMode){
