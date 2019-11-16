@@ -28,6 +28,9 @@ while(!(Test-Path -Path $userAccountsFilePath)){
 }
 
 $OSName = (Get-WmiObject win32_operatingsystem).name
+if($enableAdvancedDebugMode){
+    Write-Host "OS is $OSName."
+}
 
 #Call CheckAccounts.ps1 with parameter input
 $ScriptPath = $PSScriptRoot + "\AllWindowsBuilds"
@@ -47,7 +50,7 @@ $ScriptPath = $PSScriptRoot + "\AllWindowsBuilds"
 
 if($OSName -contains "server"){
     #Call CheckIIS(Server).ps1 with parameter input
-    $ScriptPath = $PSScriptRoot + "\AllWindowsBuilds"
+    $ScriptPath = $PSScriptRoot + "\ServerSpecific"
     & "$($ScriptPath)\CheckIIS(Server).ps1" $enableAdvancedDebugMode
 }
 

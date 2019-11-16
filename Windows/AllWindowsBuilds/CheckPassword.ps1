@@ -19,6 +19,9 @@ if($enableAdvancedDebugMode){
 
 #Import CSV database
 $file = Import-Csv -Path $pathToUsersFile
+if($enableAdvancedDebugMode -and $null -ne $file){
+    Write-Host "CSV imported successfully."
+}
 
 #Searches through csv and looks for bad passwords.
 ForEach($row in $file){

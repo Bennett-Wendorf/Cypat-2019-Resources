@@ -25,11 +25,19 @@ if($IISEnabled){
     While($true) {
         $answer = Read-Host -Prompt 'Please input y or n'
         If($answer -eq "y"){
+            if($enableAdvancedDebugMode){
+                Write-Host "Removing IIS."
+            }
             Remove-WindowsFeature -Name $IISFeatureName
             break
         }
         ElseIf($answer -eq "n") {
-            "Ok"
+            if($enableAdvancedDebugMode){
+                Write-Host "Not removing IIS due to user input."
+            }
+            else{
+                "Ok"
+            }
             break
         }
     }

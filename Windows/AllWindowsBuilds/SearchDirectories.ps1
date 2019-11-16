@@ -18,6 +18,9 @@ if($enableAdvancedDebugMode){
 [String[]]$excludes = @("My Music", "My Videos", "My Pictures")
 
 $file = Import-Csv -Path $pathToUsersFile
+if($enableAdvancedDebugMode -and $null -ne $file){
+    Write-Host "CSV imported successfully."
+}
 
 Function SearchUser{
     param($user)

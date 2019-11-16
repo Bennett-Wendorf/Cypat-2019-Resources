@@ -132,6 +132,9 @@ Function CheckLocalUsersVsCsv{
 
 #Import CSV database
 $file = Import-Csv -Path $pathToUsersFile
+if($enableAdvancedDebugMode -and $null -ne $file){
+    Write-Host "CSV imported successfully."
+}
 
 #Create new list to store local administrators
 $localAdmins = New-Object System.Collections.Generic.List[String]
