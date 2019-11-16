@@ -66,12 +66,11 @@ automaticConfiguration() {
 
 }
 
-debug_mode=false
+
 
 for arg in "$@"
 do
-    if [ "$arg" == "--debug" ] 
-    then
+    if [ "$arg" == "--debug" ]; then
         echo "Advanced Debugging Has Been Enabled!"
         debug_mode=true
         sleep 1 
