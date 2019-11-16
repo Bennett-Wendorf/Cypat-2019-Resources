@@ -27,7 +27,7 @@ Function SearchUser{
         }
 
         ForEach($directory in $directories){
-            Get-ChildItem -Path "C:\Users\$user\$directory" -Recurse -Force -Include $fileTypes -Exclude $excludes
+            Get-ChildItem -Path "C:\Users\$user\$directory" -Recurse -Force -Include $fileTypes -Exclude $excludes -ErrorAction SilentlyContinue
         }
     }
 }
