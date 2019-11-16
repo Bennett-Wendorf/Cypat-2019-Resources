@@ -99,41 +99,105 @@ if [ "$usercommand" = "1" ]; then
     #automaticConfiguration
 
 elif [ "$usercommand" = "2" ]; then
-   clear
-   echo "Select a Utility: "
-   echo "########################"
-   echo "1. Samba Configuration"
-   echo "2. User Validation"
-   echo ""
-
+   
   
-   printf 'Selection:> '
-   read -r manualChoice
+    clear
+    echo "Select a Utility: "
+    echo "########################"
+    echo "1. Samba Configuration"
+    echo "2. User Validation"
+    echo "3. Update Software and Packages"
+    echo "4. SSH Configuration"
+    echo "5: VSFTP Configuration (Not Ready)"
+    echo "6: Firewall Configuration (Not Ready)"
+    echo "7: Verify Group Policies (Not Ready)"
+    echo "8: Remove Prohibited Packages (Not Ready)"
+    echo "9: System Account Policy"
+    echo "10: File Verification (Not Ready)"
+    echo "11: \"Sticky\" Bit Locator (Not Ready)" 
+    echo "12: Password Validation (Disabled)"
+    echo ""
+
+        
+    printf 'Selection:> '
+    read -r manualChoice
 
 
-   #samba
-   if [ "${manualChoice}" = "1" ]; then
+    #samba
+    if [ "${manualChoice}" = "1" ]; then
 
-        if $debug_mode ; then
-            sudo bash ./AllLinuxBuilds/SambaConfiguration.sh --debug
-        else
-            sudo bash ./AllLinuxBuilds/SambaConfiguration.sh 
+            if $debug_mode ; then
+                sudo bash ./AllLinuxBuilds/SambaConfiguration.sh --debug
+            else
+                sudo bash ./AllLinuxBuilds/SambaConfiguration.sh 
+            fi
+
         fi
 
-    fi
+        #user account verification
+        if [ "${manualChoice}" = "2" ]; then
 
-    #user account verification
-    if [ "${manualChoice}" = "2" ]; then
+            if $debug_mode ; then
+                sudo bash ./AllLinuxBuilds/VerifyAccounts.sh --debug
+            else
+                sudo bash ./AllLinuxBuilds/VerifyAccounts.sh 
+            fi
+    
+    
+        fi
 
-        if $debug_mode ; then
-            sudo bash ./AllLinuxBuilds/VerifyAccounts.sh --debug
-        else
-            sudo bash ./AllLinuxBuilds/VerifyAccounts.sh 
+
+        #update software and packages
+        if [ "${manualChoice}" = "3" ]; then
+
+            if $debug_mode ; then
+                sudo bash ./AllLinuxBuilds/Update.sh --debug
+            else
+                sudo bash ./AllLinuxBuilds/Update.sh 
+            fi
+    
+    
+        fi
+
+
+        #configure ssh
+        if [ "${manualChoice}" = "4" ]; then
+
+            if $debug_mode ; then
+                sudo bash ./AllLinuxBuilds/SSHConfiguration.sh --debug
+            else
+                sudo bash ./AllLinuxBuilds/SSHConfiguration.sh 
+            fi
+    
+    
+        fi
+
+          #system account policy
+        if [ "${manualChoice}" = "9" ]; then
+
+            if $debug_mode ; then
+                sudo bash ./AllLinuxBuilds/SysAccountPolicy.sh --debug
+            else
+                sudo bash ./AllLinuxBuilds/SysAccountPolicy.sh 
+            fi
+    
+    
+        fi
+
+
+          #system account policy
+        if [ "${manualChoice}" = "-99" ]; then
+
+            if $debug_mode ; then
+                sudo bash ./AllLinuxBuilds/VerifyPasswords.sh --debug
+            else
+                sudo bash ./AllLinuxBuilds/VerifyPasswords.sh 
+            fi
+    
+    
         fi
    
-   
-    fi
-
+    
 elif [ "$usercommand" = "3" ]; then
     echo "Not Supported Yet"
 fi
