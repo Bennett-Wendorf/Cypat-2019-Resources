@@ -11,6 +11,8 @@ param(
     [switch]$enableAdvancedDebugMode
 )
 
+# TODO This is a test ToDo. It should be converted to an issue.
+
 #Notifies the user if Advanced Debug Mode is enabled.
 if($enableAdvancedDebugMode){
     Write-Host ""
